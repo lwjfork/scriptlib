@@ -1,0 +1,101 @@
+//  拷贝文件内容
+def copyFile(String srcFileName, String dstFileName) {
+    def srcFile = new File(srcFileName)
+    def targetFile = new File(dstFileName)
+    targetFile.withOutputStream { os ->
+        srcFile.withInputStream { ins ->
+            os << ins   //利用OutputStream的<<操作符重载，完成从inputstream到OutputStream
+            //的输出
+        }
+    }
+}
+
+def copyDir(String srcDir, String dstDir) {
+    from(srcDir)
+    into(dstDir)
+}
+
+// 删除文件
+def rmFile(String srcFile) {
+    def targetFile = new File(srcFile)
+    targetFile.deleteOnExit()
+}
+//  获取当前时间  打包时间
+String releaseTime(String format = "yyyyMMdd", String timeZone = "UTC") {
+    return new Date().format(format, TimeZone.getTimeZone(timeZone))
+}
+
+void loadProperties(String sourceFileName) {
+    def config = new Properties()
+    def propFile = new File(sourceFileName)
+    config.load(new FileInputStream(propFile))
+    for (Map.Entry property in config) {
+        rootProject.extensions.extraProperties.set(property.key, property.value)
+    }
+
+}
+
+def rmDir(String dir) {
+}
+
+def cleanOutput(boolean bJar = true) {
+
+}
+
+def copyOutput(boolean bJar = true) {
+
+}
+// 获取  AndroidManifest.xml 里的 versionName
+String getVersionNameAdvanced() {
+    def xmlFile = project.file("AndroidManifest.xml")
+    def rootManifest = new XmlSlurper().parse(xmlFile)
+    return rootManifest['@android:versionName']
+}
+
+byte[] readFile(String srcFile) {
+    def targetFile = new File(srcFile)
+    return targetFile.getBytes()
+}
+
+// 测试 gradle 文件
+def testOK(String str) {
+    println str
+}
+
+def reNameFile(String srcName, String targetName) {
+
+
+}
+/**
+ * path  txt  文件的路径
+ *       txt文件内容为  每行一个渠道，
+ *                     有效的渠道加注释 //
+ *
+ * @param path
+ * @return
+ */
+def umengFlavors(String path) {
+    file(path).eachLine {
+        line ->
+            if (!line.startsWith("//")) {
+                //动态创建productFlavor
+                android.productFlavors.create(line, {
+                    manifestPlaceholders = [channel_param: name]
+                })
+
+            }
+    }
+}
+
+ext {
+    testOK = this.&testOK
+    copyFile = this.&copyFile
+    copyDir = this.&copyDir
+    rmFile = this.&rmFile
+    rmDir = this.&rmDir
+    cleanOutput = this.&cleanOutput
+    copyOutput = this.&copyOutput
+    umengFlavors = this.&umengFlavors
+    loadProperties = this.&loadProperties
+    getVersionNameAdvanced = this.&getVersionNameAdvanced
+}
