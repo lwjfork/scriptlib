@@ -8,11 +8,41 @@
  ```
  
  
-## android module 上传到 jcenter
-> (假设你已经有jcenter账号了)上传到jcenter 上你所需要做的就是引入  [utils.gradle](./utils.gradle)
-  和   [bintray.gradle](./bintray.gradle) 文件 
-  
-> 在一个配置文件里 配置你所想要配置的 库的信息。建议你在local.properties 里配置你的信息 防止被泄漏（local.properties 默认是不加入版本控制的）
+## android module 上传到 jcenter（假设你有jcenter帐号了）
+### 加入上传jcenter 必须的组件
+  在 根目录的 build.gradle 文件里加入上传jcenter必须的组件
+   
+            
+          `classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2`
+          
+          `classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3`
+          
+   重点是 以上两行
+          
+  ```
+  buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.5.0'
+        //  下面两行是上传 jcenter 上的可以删除了
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+  }
+
+   allprojects {
+    repositories {
+        jcenter()
+    }
+   }     
+  ```  
+
+### 配置你的库信息
+在一个配置文件里 配置你所想要配置的 库的信息。建议你在local.properties 里配置你的信息 防止被泄漏（local.properties 默认是不加入版本控制的）
 
    ```
     # 这里改成groupId ， 比如com.android.support
@@ -44,42 +74,17 @@
      # key
     BINTRAY_APIKEY=你在jcenter上生成的key 
    ```
- > 接下来你只需要在 buile.gradle 文件里引入文件即可 
-  在 根目录的 build.gradle 文件里加入上传jcenter必须的组件
-   
-   重点是 这两行  
-          `classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2`
-        `classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3`
-         
-  ```
-  buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.5.0'
-        //  下面两行是上传 jcenter 上的可以删除了
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-  }
 
-   allprojects {
-    repositories {
-        jcenter()
-    }
-   }     
-  ```  
- 最后在你想要上传的module的gradle文件里引入：在文件末尾加上 
- > 建议 你将utils.gradle 和 bintray.gradle 放置在 根路径下 这样获取路径只需要使用
- > rootProject.getRootDir().getAbsolutePath()+"/utils.gradle" 和 rootProject.getRootDir().getAbsolutePath()+"/bintray.gradle"
+### 引入[utils.gradle](./utils.gradle)和   [bintray.gradle](./bintray.gradle) 文件   
+> 建议 你将utils.gradle 和 bintray.gradle 放置在 根路径下 这样获取路径只需要使用
+> rootProject.getRootDir().getAbsolutePath()+"/utils.gradle" 和 rootProject.getRootDir().getAbsolutePath()+"/bintray.gradle"
  
+ 在需要上传module的build.gradle  文件里加入
  
  ```
 apply from: utils.gradle 的路径
 loadProperties(配置的properties的路径)
 apply from: bintray.gradle的路径"
  ``` 
+其中的配置的properties 就是你前面配置的库信息的文件
   
