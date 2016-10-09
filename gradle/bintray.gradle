@@ -1,6 +1,16 @@
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
+void loadProperties(String sourceFileName) {
+    def config = new Properties()
+    def propFile = new File(sourceFileName)
+    config.load(new FileInputStream(propFile))
+    for (Map.Entry property in config) {
+        rootProject.extensions.extraProperties.set(property.key, property.value)
+    }
+
+}
+loadProperties(rootProject.getRootDir().getAbsolutePath()+"/local.properties")
 //填写唯一包名
 group = rootProject.ext.PROJ_GROUP
 version = rootProject.ext.PROJ_VERSION
