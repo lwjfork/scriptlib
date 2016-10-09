@@ -10,14 +10,18 @@
  
 ## android module 上传到 jcenter（假设你有jcenter帐号了）
 ### 加入上传jcenter 必须的组件
-  在 根目录的 build.gradle 文件里加入上传jcenter必须的组件
+>此处会因为gradel插件版本的差异导致上传失败。如果出现错误，在确定你配置无错的情况下，请更改你的gradle版本或者 com.github.dcendents:android-maven-gradle-plugin 的版本,
+  >>更改版本请参考 [android-maven-gradle-plugin](https://github.com/dcendents/android-maven-gradle-plugin)
+  
+在 根目录的 build.gradle 文件里加入上传jcenter必须的组件
    
             
           `classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2`
           
           `classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3`
           
-   重点是 以上两行
+  
+  加入后 根目录下的build.gradle的完整内容：
           
   ```
   buildscript {
@@ -42,7 +46,7 @@
   ```  
 
 ### 配置你的库信息
-在一个配置文件里 配置你所想要配置的 库的信息。建议你在local.properties 里配置你的信息 防止被泄漏（local.properties 默认是不加入版本控制的）
+在一个配置文件里 配置你所想要配置开源库的信息。在根目录下的local.properties 里配置你的信息 防止被泄漏（local.properties 默认是不加入版本控制的）
 
    ```
     # 这里改成groupId ， 比如com.android.support
@@ -75,16 +79,14 @@
     BINTRAY_APIKEY=你在jcenter上生成的key 
    ```
 
-### 引入[utils.gradle](./utils.gradle)和   [bintray.gradle](./bintray.gradle) 文件   
-> 建议 你将utils.gradle 和 bintray.gradle 放置在 根路径下 这样获取路径只需要使用
+### 引入[bintray.gradle](./bintray.gradle) 文件   
+> 建议 使用网络上的 bintray.gradle 放置在 根路径下 这样获取路径只需要使用
 > rootProject.getRootDir().getAbsolutePath()+"/utils.gradle" 和 rootProject.getRootDir().getAbsolutePath()+"/bintray.gradle"
  
- 在需要上传module的build.gradle  文件里加入
+ 在需要上传module的build.gradle 文件的末尾加入
  
  ```
-apply from: utils.gradle 的路径
-loadProperties(配置的properties的路径)
-apply from: bintray.gradle的路径"
+apply from: "https://raw.githubusercontent.com/lwjRes/scriptlib/master/gradle/bintray.gradle"
  ``` 
-其中的配置的properties 就是你前面配置的库信息的文件
+
   
