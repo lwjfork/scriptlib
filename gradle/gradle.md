@@ -80,8 +80,7 @@
    ```
 
 ### 引入[bintray.gradle](./bintray.gradle) 文件   
-> 建议 使用网络上的 bintray.gradle 放置在 根路径下 这样获取路径只需要使用
-> rootProject.getRootDir().getAbsolutePath()+"/utils.gradle" 和 rootProject.getRootDir().getAbsolutePath()+"/bintray.gradle"
+> 建议 使用网络上的 bintray.gradle 
  
  在需要上传module的build.gradle 文件的末尾加入
  
