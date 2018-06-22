@@ -54,6 +54,7 @@ install {
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     classifier = 'sources'
+    options.encoding = "utf-8"
 }
 
 task javadoc(type: Javadoc) {
