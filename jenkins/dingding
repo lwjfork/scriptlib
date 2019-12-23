@@ -1,0 +1,68 @@
+#!/bin/sh
+
+# 发送到 钉钉
+function send2DingDing() {
+  CAUSE=$1
+  CAUSE=${CAUSE#*\'}
+  CAUSE=${CAUSE%*\'}
+  BUILD_STATUS=$2
+  BUILD_STATUS=${BUILD_STATUS#*\'}
+  BUILD_STATUS=${BUILD_STATUS%*\'}
+
+  url="https://oapi.dingtalk.com/robot/send?access_token=${access_token}"
+  msgtype="markdown"
+  buildConsole="${BUILD_URL}console"
+  title="本消息为jenkins构建自动发送，请勿回复"
+  msg="**构建项目**：${JOB_NAME}\n\n"
+  msg="${msg}**构建分支**：${GIT_BRANCH}\n\n"
+
+  atObj="{}"
+  phoneNums="[]"
+  isAtAll="false "
+  if [ "$BUILD_STATUS" == "SUCCESS" ]; then
+    # 成功后发送消息
+    # at 的用户
+     phoneNums="[]"
+    isAtAll="false "
+    msg="<font color=#008000>${msg}**构建状态**：${BUILD_STATUS}</font>\n\n"
+  else
+    # 失败后发送消息
+    # at
+    phoneNums="[]"
+    isAtAll="false "
+    msg="<font color=#FF0000>${msg}**构建状态**：${BUILD_STATUS}</font>\n\n"
+  fi
+  msg="${msg}**构建编号**：${BUILD_NUMBER}\n\n"
+  msg="${msg}**触发原因**：${CAUSE}\n\n"
+  msg="${msg}**构建地址**：\n>>[${BUILD_URL}](${BUILD_URL})\n\n"
+  msg="${msg}**日志地址**：\n>>[${buildConsole}](${buildConsole})\n\n"
+  atObj="{\"atMobiles\":$phoneNums,\"isAtAll\":$isAtAll}"
+  content="{\"msgtype\":\"${msgtype}\",\"${msgtype}\":{\"title\":\"${title}\",\"text\":\"${msg}\"},\"at\":$atObj}"
+
+  curl $url \
+     -H 'Content-Type: application/json' \
+     -d "${content}"
+
+}
+
+# 获取当次构建的信息
+function getBuildInfo() {
+  buildAPI="${BUILD_URL}api/xml"
+  echo "当次构建结果API地址为${buildAPI}"
+  # curl jenkins REST API
+  result=$(curl -m 10 -s -w "httpCode:%{http_code}" ${buildAPI})
+  respCode=${result#*httpCode:}
+  if test $respCode -eq 200; then
+    respXml=${result%httpCode:*}
+    # 获取 build status
+    buildStatus=$(echo $respXml | sed 's/.*<result>\(.*\)<\/result>.*/\1/g')
+    # 获取 buildCause
+    buildCause=$(echo $respXml | sed 's/.*<shortDescription>\(.*\)<\/shortDescription>.*/\1/g')
+
+    send2DingDing "'$buildCause'" "'$buildStatus'"
+  else
+    echo "获取API失败：$$buildAPI"
+  fi
+}
+
+getBuildInfo
