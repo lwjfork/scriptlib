@@ -24,13 +24,13 @@ function send2DingDing() {
     # at 的用户
      phoneNums="[]"
     isAtAll="false "
-    msg="<font color=#008000>${msg}**构建状态**：${BUILD_STATUS}</font>\n\n"
+    msg="${msg}**构建状态**：<font color=#008000>${BUILD_STATUS}</font>\n\n"
   else
     # 失败后发送消息
     # at
     phoneNums="[]"
     isAtAll="false "
-    msg="<font color=#FF0000>${msg}**构建状态**：${BUILD_STATUS}</font>\n\n"
+    msg="${msg}**构建状态**：<font color=#FF0000>${BUILD_STATUS}</font>\n\n"
   fi
   msg="${msg}**构建编号**：${BUILD_NUMBER}\n\n"
   msg="${msg}**触发原因**：${CAUSE}\n\n"
