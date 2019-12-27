@@ -1,4 +1,34 @@
 #!/bin/sh
+phoneNums=""
+atUserMsg=""
+
+# 成功后 at 用户的手机号
+successPhones=()
+# 失败后 at 用户的手机号
+failPhones=()
+
+# 将手机号数组 转换为 json Array
+function buildPhoneNumsJsonArray() {
+  local arr=(${!1})
+  phoneNumsVar="["
+  for ((i = 0; i < ${#arr[@]}; i++)); do
+    if test $i -gt 0; then
+      phoneNumsVar="${phoneNumsVar},"
+    fi
+    phoneNumsVar="${phoneNumsVar}\"${arr[i]}\""
+  done
+  phoneNumsVar="${phoneNumsVar}]"
+  phoneNums=$phoneNumsVar
+}
+
+function buildAtUserStr() {
+  local arr=(${!1})
+  phoneNumsStrVar=''
+  for ((i = 0; i < ${#arr[@]}; i++)); do
+    phoneNumsStrVar="@${arr[$i]} $phoneNumsStrVar"
+  done
+  atUserMsg=$phoneNumsStrVar
+}
 
 # 发送到 钉钉
 function send2DingDing() {
@@ -15,33 +45,34 @@ function send2DingDing() {
   title="本消息为jenkins构建自动发送，请勿回复"
   msg="**构建项目**：${JOB_NAME}\n\n"
   msg="${msg}**构建分支**：${GIT_BRANCH}\n\n"
-
+  buildStatusMsg=""
   atObj="{}"
-  phoneNums="[]"
+
   isAtAll="false "
   if [ "$BUILD_STATUS" == "SUCCESS" ]; then
     # 成功后发送消息
-    # at 的用户
-     phoneNums="[]"
-    isAtAll="false "
-    msg="<font color=#008000>${msg}**构建状态**：${BUILD_STATUS}</font>\n\n"
+    buildStatusMsg="**构建状态**：<font color=#008000>${BUILD_STATUS}</font>\n\n"
+    buildPhoneNumsJsonArray successPhones[@]
+    buildAtUserStr successPhones[@]
   else
     # 失败后发送消息
-    # at
-    phoneNums="[]"
-    isAtAll="false "
-    msg="<font color=#FF0000>${msg}**构建状态**：${BUILD_STATUS}</font>\n\n"
+    buildStatusMsg="**构建状态**：<font color=#FF0000>${BUILD_STATUS}</font>\n\n"
+    buildPhoneNumsJsonArray failPhones[@]
+    buildAtUserStr failPhones[@]
   fi
   msg="${msg}**构建编号**：${BUILD_NUMBER}\n\n"
   msg="${msg}**触发原因**：${CAUSE}\n\n"
   msg="${msg}**构建地址**：\n>>[${BUILD_URL}](${BUILD_URL})\n\n"
   msg="${msg}**日志地址**：\n>>[${buildConsole}](${buildConsole})\n\n"
-  atObj="{\"atMobiles\":$phoneNums,\"isAtAll\":$isAtAll}"
+  msg="${msg}**Swagger UI**：\n>>[${Swagger}](${Swagger})\n\n"
+  msg="${msg}${atUserMsg}"
+
+  atObj="{\"atMobiles\":${phoneNums},\"isAtAll\":${isAtAll}}"
   content="{\"msgtype\":\"${msgtype}\",\"${msgtype}\":{\"title\":\"${title}\",\"text\":\"${msg}\"},\"at\":$atObj}"
 
   curl $url \
-     -H 'Content-Type: application/json' \
-     -d "${content}"
+    -H 'Content-Type: application/json' \
+    -d "${content}"
 
 }
 
