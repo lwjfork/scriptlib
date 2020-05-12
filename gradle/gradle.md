@@ -16,9 +16,11 @@
 在 根目录的 build.gradle 文件里加入上传jcenter必须的组件
    
             
-          `classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2`
+          classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
           
-          `classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3`
+          classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
+
+          classpath 'org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.8'
           
   
   加入后 根目录下的build.gradle的完整内容：
