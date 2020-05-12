@@ -75,6 +75,11 @@
     DEVELOPER_NAME=android
     #这里改成开发者邮箱，比如[email]someone@android.com[/email]
     DEVELOPER_EMAIL=someone@android.com
+    # 产物类型
+    PROJ_PACKAGING = 'aar'
+    // 中央仓库名称
+    PROJ_REPO = 'maven'
+    
     # 用户名
     BINTRAY_USER=你的jcenter的名字
      # key
