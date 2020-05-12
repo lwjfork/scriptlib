@@ -1,5 +1,6 @@
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'org.jetbrains.dokka-android'
 
 void loadProperties(String sourceFileName) {
     def config = new Properties()
@@ -10,7 +11,8 @@ void loadProperties(String sourceFileName) {
     }
 
 }
-loadProperties(rootProject.getRootDir().getAbsolutePath()+"/local.properties")
+
+loadProperties(rootProject.getRootDir().getAbsolutePath() + "/local.properties")
 //填写唯一包名
 group = rootProject.ext.PROJ_GROUP
 version = rootProject.ext.PROJ_VERSION
@@ -51,16 +53,54 @@ install {
     }
 }
 
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
+if (project.hasProperty("kotlin")) {//Kotlin libraries
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.srcDirs
+    }
+    task javadoc(type: Javadoc, dependsOn: dokka) {
+
+    }
+
+} else if (project.hasProperty("android")) {// Android libraries
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.srcDirs
+    }
+    task javadoc(type: Javadoc) {
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+        options.encoding = "utf-8"
+    }
+
+} else {// Java libraries
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        fromsourceSets.main.allSource
+    }
 }
 
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-     options.encoding = "utf-8"
+//解决kotlin javadoc.options报错
+
+dokka {
+
+    outputFormat = 'html'
+
+    outputDirectory = "$buildDir/javadoc"
+
 }
+
+
+//task sourcesJar(type: Jar) {
+//    from android.sourceSets.main.java.srcDirs
+//    classifier = 'sources'
+//}
+//
+//task javadoc(type: Javadoc) {
+//    source = android.sourceSets.main.java.srcDirs
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//    options.encoding = "utf-8"
+//}
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
@@ -71,7 +111,7 @@ tasks.withType(Javadoc) {
     options.addStringOption('Xdoclint:none', '-quiet')
     options.addStringOption('encoding', 'UTF-8')
     options.addStringOption('charSet ', 'UTF-8')
-    options{
+    options {
         encoding "UTF-8"
         charSet 'UTF-8'
         links "http://docs.oracle.com/javase/7/docs/api"
@@ -131,5 +171,3 @@ ext {
     //# key
     BINTRAY_APIKEY = ''
 }
-//    how to import and compile
-//    compile PROJ_GROUP:PROJ_NAME:PROJ_VERSION
