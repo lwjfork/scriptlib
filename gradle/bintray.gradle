@@ -21,7 +21,7 @@ install {
     repositories.mavenInstaller {
         pom {
             project {
-                packaging "aar"
+                packaging rootProject.ext.PROJ_PACKAGING
 
                 //添加项目描述
                 name rootProject.ext.PROJ_DESCRIPTION
@@ -76,11 +76,11 @@ if (project.hasProperty("kotlin")) {//Kotlin libraries
 } else {// Java libraries
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
-        from sourceSets.main.allSource
+        fromsourceSets.main.allSource
     }
 }
 
-//解决kotlin javadoc.options报错
+//解决kotlin javadoc.options抱错
 
 dokka {
 
@@ -135,7 +135,7 @@ bintray {
     configurations = ['archives']
 
     pkg {
-        repo = "maven"//上传的中央仓库名称
+        repo = rootProject.ext.PROJ_REPO//上传的中央仓库名称
         name = rootProject.ext.PROJ_NAME//上传的项目的名字
         websiteUrl = rootProject.ext.PROJ_WEBSITEURL
         vcsUrl = rootProject.ext.PROJ_VCSURL
@@ -143,6 +143,7 @@ bintray {
         publish = true  //是否发布
     }
 }
+
 ext {
     //#这里改成开发者id，比如
     DEVELOPER_ID = ''
@@ -166,8 +167,15 @@ ext {
     PROJ_DESCRIPTION = ''
     //    #这里改成库的标示，比如appcompat-v7
     PROJ_ARTIFACTID = ''
+    // 产物类型
+    PROJ_PACKAGING = 'aar'
+    // 中央仓库名称
+    PROJ_REPO = 'maven'
     //  # 用户名
     BINTRAY_USER = ''
     //# key
     BINTRAY_APIKEY = ''
 }
+
+//    how to import and compile
+//    compile PROJ_GROUP:PROJ_NAME:PROJ_VERSION
