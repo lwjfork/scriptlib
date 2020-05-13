@@ -79,18 +79,17 @@ if (project.hasProperty("kotlin")) {//Kotlin libraries
 } else {// Java libraries
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
-        fromsourceSets.main.allSource
+        from sourceSets.main.allSource
     }
 }
 
 //解决kotlin javadoc.options抱错
 
-dokka {
-
+if (project.hasProperty("kotlin")) {
+   dokka {
     outputFormat = 'html'
-
     outputDirectory = "$buildDir/javadoc"
-
+  }
 }
 
 
@@ -171,9 +170,9 @@ ext {
     //    #这里改成库的标示，比如appcompat-v7
     PROJ_ARTIFACTID = ''
     // 产物类型
-    PROJ_PACKAGING = 'aar'
+    PROJ_PACKAGING = ''
     // 中央仓库名称
-    PROJ_REPO = 'maven'
+    PROJ_REPO = ''
     //  # 用户名
     BINTRAY_USER = ''
     //# key
