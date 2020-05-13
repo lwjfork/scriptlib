@@ -1,15 +1,18 @@
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
-apply plugin: 'org.jetbrains.dokka-android'
+if (project.hasProperty("kotlin") && project.hasProperty("android")) {
+    apply plugin: 'org.jetbrains.dokka-android'
+}
 
 void loadProperties(String sourceFileName) {
     def config = new Properties()
     def propFile = new File(sourceFileName)
-    config.load(new FileInputStream(propFile))
-    for (Map.Entry property in config) {
-        rootProject.extensions.extraProperties.set(property.key, property.value)
+    if (propFile.exists()) {
+        config.load(new FileInputStream(propFile))
+        for (Map.Entry property in config) {
+            rootProject.extensions.extraProperties.set(property.key, property.value)
+        }
     }
-
 }
 
 loadProperties(rootProject.getRootDir().getAbsolutePath() + "/local.properties")
