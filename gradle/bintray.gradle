@@ -24,11 +24,13 @@ install {
     repositories.mavenInstaller {
         pom {
             project {
+                groupId rootProject.ext.PROJ_GROUP
+                artifactId rootProject.ext.PROJ_ARTIFACTID
                 packaging rootProject.ext.PROJ_PACKAGING
-
                 //添加项目描述
-                name rootProject.ext.PROJ_DESCRIPTION
+                name rootProject.ext.PROJ_NAME
                 url rootProject.ext.PROJ_WEBSITEURL
+                description rootProject.ext.PROJ_DESCRIPTION
 
                 //设置开源证书信息
                 licenses {
