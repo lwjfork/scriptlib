@@ -23,7 +23,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3da32143-1aa3-48c4-9e34-2bf3fc731988" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/gradle/publish/maven/aar/publish-no-kotlin.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/publish/maven/aar/publish-no-kotlin.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/publish/maven/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +96,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1622702159945</updated>
-      <workItem from="1622702161161" duration="2261000" />
+      <workItem from="1622702161161" duration="3760000" />
     </task>
     <servers />
   </component>
