@@ -4,14 +4,14 @@
 ## 注意事项
 1. 配置环境变量
       
-      环境变量      |  含义         | 
---------------------|------------------|
-OSSRH_USERNAME | mavenCentral 用户名 |
-OSSRH_PASSWORD| mavenCentral 密码 |
-SIGNING_KEY\_ID| 生成的 GPG id |
-SIGNING_PASSWORD| GPG 密码 |
-SIGNING_SECRET\_KEY\_RING\_FILE| 密钥导出生成的 xxx.gpg 文件路径 |
-SONATYPE_STAGING\_PROFILE\_ID| https://s01.oss.sonatype.org/ 上的 profiles id |
+|   环境变量           |  含义         | 
+|--------------------|------------------|
+|  OSSRH_USERNAME | mavenCentral 用户名 |
+|  OSSRH_PASSWORD| mavenCentral 密码 |
+|  SIGNING_KEY\_ID| 生成的 GPG id |
+|  SIGNING_PASSWORD| GPG 密码 |
+|  SIGNING_SECRET\_KEY\_RING\_FILE| 密钥导出生成的 xxx.gpg 文件路径 |
+|  SONATYPE_STAGING\_PROFILE\_ID| https://s01.oss.sonatype.org/ 上的 profiles id |
 
 2. 修改项目的根目录的 build.gradle 
 
@@ -111,7 +111,7 @@ SONATYPE_STAGING\_PROFILE\_ID| https://s01.oss.sonatype.org/ 上的 profiles id 
    ``` 
    
 
-#### 2.2 发布 包含 kotlin 代码的 jar
+#### 2.2 发布 包含 kotlin 代码的 aar
 1. 在 根目录 build.gradle 文件的 dependencies 节点再次增加以下代码
    
    ```
