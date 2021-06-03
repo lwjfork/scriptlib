@@ -6,29 +6,25 @@ task sourceJar(type: Jar) {
     from sourceSets.main.java.srcDirs
 }
 
-
-task javadoc(type: Javadoc) {
-    options.encoding "UTF-8"
-    options.charSet 'UTF-8'
-    source = sourceSets.main.java.srcDirs
-    options.links("http://docs.oracle.com/javase/7/docs/api/");
-    failOnError = false
-}
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
 tasks.withType(Javadoc) {
     options.addStringOption('Xdoclint:none', '-quiet')
     options.addStringOption('encoding', 'UTF-8')
     options.addStringOption('charSet ', 'UTF-8')
+    failOnError = false
+    source = sourceSets.main.java.srcDirs
     options {
         encoding "UTF-8"
         charSet 'UTF-8'
         links "http://docs.oracle.com/javase/7/docs/api"
     }
 }
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+
 
 
 artifacts {
