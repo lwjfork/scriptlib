@@ -36,7 +36,7 @@ afterEvaluate {
                 artifactId PUBLISH_ARTIFACT_ID
                 version PUBLISH_VERSION
                 // Two artifacts, the `aar` (or `jar`) and the sources
-                from components.release
+                from components.java
                 artifact sourceJar
                 artifact javadocJar
 
