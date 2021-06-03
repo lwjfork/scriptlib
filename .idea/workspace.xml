@@ -23,8 +23,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3da32143-1aa3-48c4-9e34-2bf3fc731988" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/gradle/publish/maven/aar/publish-conatin-kotlin.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/publish/maven/aar/publish-contain-kotlin.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/publish/maven/jar/publish-conatin-kotlin.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/publish/maven/jar/publish-contain-kotlin.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/publish/maven/jar/publish-contain-kotlin.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/publish/maven/jar/publish-contain-kotlin.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,7 +87,8 @@
       <workItem from="1622702161161" duration="5066000" />
       <workItem from="1622712240812" duration="928000" />
       <workItem from="1622713875243" duration="964000" />
-      <workItem from="1622719404077" duration="2213000" />
+      <workItem from="1622719404077" duration="2961000" />
+      <workItem from="1622731137618" duration="15000" />
     </task>
     <servers />
   </component>
